@@ -1,5 +1,6 @@
 """Focused numeric-guard coverage for VideoImportConfig."""
 
+import re
 from dataclasses import replace
 
 import pytest
@@ -28,7 +29,7 @@ from hflow.importers.video import VideoImportConfig
     ],
 )
 def test_numeric_field_guards(field: str, value: object, message: str) -> None:
-    with pytest.raises(ValueError, match=rf"^{message.replace('[', r'\[').replace(']', r'\]')}$"):
+    with pytest.raises(ValueError, match=rf"^{re.escape(message)}$"):
         replace(VideoImportConfig(duration_s=1), **{field: value})
 
 
